@@ -1,0 +1,9 @@
+{
+  "name": "jj-workflow",
+  "version": "0.1.0",
+  "description": "Streamline Jujutsu (jj) version control workflow with simple commands for committing, creating changesets, squashing, and splitting",
+  "author": {
+    "name": "aohoyd"
+  },
+  "keywords": ["jj", "jujutsu", "vcs", "workflow", "git"]
+}
