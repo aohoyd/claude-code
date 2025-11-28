@@ -155,6 +155,16 @@
       },
       "source": "./plugins/security-guidance",
       "category": "security"
+    },
+    {
+      "name": "skill-reminder",
+      "version": "0.1.0",
+      "description": "Reminds Claude to check for and activate relevant skills before implementing features",
+      "author": {
+        "name": "aohoyd"
+      },
+      "source": "./plugins/skill-reminder",
+      "category": "productivity"
     }
   ]
 }

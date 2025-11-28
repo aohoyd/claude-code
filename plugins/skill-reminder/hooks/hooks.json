@@ -1,0 +1,17 @@
+{
+  "description": "Reminds Claude to check for and activate relevant skills before implementing features",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Analyze if this user prompt is asking for implementation work (creating features, building functionality, implementing systems, adding capabilities, writing code for new functionality).\n\nUser prompt: $USER_PROMPT\n\nIf the prompt is asking for implementation work, return a reminder to check for relevant skills.\n\nIf the prompt is NOT asking for implementation (e.g., questions, explanations, simple edits, bug fixes, file reading, research), return nothing.\n\nFor implementation requests, return this exact JSON:\n{\"systemMessage\": \"Before implementing, check available skills using /skills or the Skill tool. Relevant skills may provide patterns, best practices, or established workflows for this task.\"}\n\nFor non-implementation requests, return:\n{\"continue\": true}",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}
