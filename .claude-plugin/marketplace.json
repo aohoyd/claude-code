@@ -15,6 +15,16 @@
       "category": "development"
     },
     {
+      "name": "brainstorm",
+      "version": "0.1.0",
+      "description": "Collaborative design workflow that transforms ideas into fully-formed designs and implementation plans through natural dialogue",
+      "author": {
+        "name": "aohoyd"
+      },
+      "source": "./plugins/brainstorm",
+      "category": "development"
+    },
+    {
       "name": "claude-opus-4-5-migration",
       "description": "Migrate your code and prompts from Sonnet 4.x and Opus 4.1 to Opus 4.5.",
       "version": "1.0.0",
