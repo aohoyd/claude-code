@@ -10,7 +10,7 @@ Guide the user through creating a complete, high-quality Claude Code plugin from
 
 ## Core Principles
 
-- **Ask clarifying questions**: Identify all ambiguities about plugin purpose, triggering, scope, and components. Ask specific, concrete questions rather than making assumptions. Wait for user answers before proceeding with implementation.
+- **Use AskUserQuestion tool**: When gathering requirements or clarifying ambiguities, always use the **AskUserQuestion tool** to present structured options. This provides a better user experience than plain text questions. Wait for user answers before proceeding with implementation.
 - **Load relevant skills**: Use the Skill tool to load plugin-dev skills when needed (plugin-structure, hook-development, agent-development, etc.)
 - **Use specialized agents**: Leverage agent-creator, plugin-validator, and skill-reviewer agents for AI-assisted development
 - **Follow best practices**: Apply patterns from plugin-dev's own implementation
@@ -30,12 +30,27 @@ Guide the user through creating a complete, high-quality Claude Code plugin from
 2. If plugin purpose is clear from arguments:
    - Summarize understanding
    - Identify plugin type (integration, workflow, analysis, toolkit, etc.)
-3. If plugin purpose is unclear, ask user:
-   - What problem does this plugin solve?
-   - Who will use it and when?
-   - What should it do?
-   - Any similar plugins to reference?
-4. Summarize understanding and confirm with user before proceeding
+3. If plugin purpose is unclear, use **AskUserQuestion** to clarify:
+   ```
+   Question: "What type of plugin would you like to create?"
+   Header: "Plugin type"
+   Options:
+     - Integration (Connect to external services or APIs)
+     - Workflow (Automate development workflows)
+     - Analysis (Code review, testing, quality checks)
+     - Toolkit (Collection of utilities and helpers)
+   ```
+
+   ```
+   Question: "What problem should this plugin solve?"
+   Header: "Problem"
+   Options:
+     - Repetitive tasks (Automate things I do frequently)
+     - Missing capability (Add functionality Claude Code lacks)
+     - Team standards (Enforce conventions across projects)
+     - External integration (Connect to tools/services I use)
+   ```
+4. Summarize understanding and use AskUserQuestion to confirm before proceeding
 
 **Output**: Clear statement of plugin purpose and target users
 
@@ -70,7 +85,16 @@ Guide the user through creating a complete, high-quality Claude Code plugin from
    | Hooks          | 0     | Not needed |
    | MCP            | 1     | Database integration |
    ```
-5. Get user confirmation or adjustments
+5. Use **AskUserQuestion** to get confirmation:
+   ```
+   Question: "Does this component plan look right?"
+   Header: "Confirm"
+   Options:
+     - Looks good (Proceed with this plan)
+     - Add more (I need additional components)
+     - Remove some (Some components aren't needed)
+     - Start over (Let's rethink the approach)
+   ```
 
 **Output**: Confirmed list of components to create
 
@@ -91,11 +115,31 @@ Guide the user through creating a complete, high-quality Claude Code plugin from
    - **MCP**: What server type? Authentication? Which tools?
    - **Settings**: What fields? Required vs optional? Defaults?
 
-2. **Present all questions to user in organized sections** (one section per component type)
+2. **Use AskUserQuestion to gather answers** - group related questions by component type:
+
+   **Example for skills:**
+   ```
+   Question: "How detailed should the skill documentation be?"
+   Header: "Detail level"
+   Options:
+     - Minimal (Just the essentials, <500 words)
+     - Standard (Good coverage, ~1500 words)
+     - Comprehensive (Full detail with examples, 2000+ words)
+   ```
+
+   **Example for agents:**
+   ```
+   Question: "When should this agent trigger?"
+   Header: "Trigger"
+   Options:
+     - Proactive (Automatically after related actions)
+     - On request (Only when user explicitly asks)
+     - Both (Proactive with option to invoke manually)
+   ```
 
 3. **Wait for answers before proceeding to implementation**
 
-4. If user says "whatever you think is best", provide specific recommendations and get explicit confirmation
+4. If user says "whatever you think is best", provide specific recommendations and use AskUserQuestion to get explicit confirmation
 
 **Example questions for a skill**:
 - What specific user queries should trigger this skill?
@@ -119,9 +163,15 @@ Guide the user through creating a complete, high-quality Claude Code plugin from
 
 **Actions**:
 1. Determine plugin name (kebab-case, descriptive)
-2. Choose plugin location:
-   - Ask user: "Where should I create the plugin?"
-   - Offer options: current directory, ../new-plugin-name, custom path
+2. Use **AskUserQuestion** to choose plugin location:
+   ```
+   Question: "Where should I create the plugin?"
+   Header: "Location"
+   Options:
+     - Current directory (Create in ./plugin-name)
+     - Parent directory (Create in ../plugin-name)
+     - Plugins folder (Create in ./plugins/plugin-name)
+   ```
 3. Create directory structure using bash:
    ```bash
    mkdir -p plugin-name/.claude-plugin
@@ -264,7 +314,15 @@ Guide the user through creating a complete, high-quality Claude Code plugin from
    - Any remaining issues
    - Overall quality assessment
 
-7. **Ask user**: "Validation complete. Issues found: [count critical], [count warnings]. Would you like me to fix them now, or proceed to testing?"
+7. **Use AskUserQuestion** to get user decision:
+   ```
+   Question: "Validation complete. Found [N] issues. How would you like to proceed?"
+   Header: "Next step"
+   Options:
+     - Fix all (Address all issues before testing)
+     - Fix critical (Only fix critical errors)
+     - Proceed (Continue to testing as-is)
+   ```
 
 **Output**: Plugin validated and ready for testing
 
@@ -297,7 +355,15 @@ Guide the user through creating a complete, high-quality Claude Code plugin from
    - For hooks: Use `claude --debug` to see hook execution
    - For MCP: Use `/mcp` to verify servers and tools
 
-4. **Ask user**: "I've prepared the plugin for testing. Would you like me to guide you through testing each component, or do you want to test it yourself?"
+4. **Use AskUserQuestion** to offer testing guidance:
+   ```
+   Question: "The plugin is ready for testing. How would you like to proceed?"
+   Header: "Testing"
+   Options:
+     - Guided testing (Walk me through testing each component)
+     - Self-guided (I'll test it myself)
+     - Skip testing (I'll test later)
+   ```
 
 5. **If user wants guidance**, walk through testing each component with specific test cases
 
@@ -349,7 +415,7 @@ Guide the user through creating a complete, high-quality Claude Code plugin from
 - **Use TodoWrite** to track progress at every phase
 - **Load skills with Skill tool** when working on specific component types
 - **Use specialized agents** (agent-creator, plugin-validator, skill-reviewer)
-- **Ask for user confirmation** at key decision points
+- **Use AskUserQuestion** at key decision points for user confirmation
 - **Follow plugin-dev's own patterns** as reference examples
 - **Apply best practices**:
   - Third-person descriptions for skills

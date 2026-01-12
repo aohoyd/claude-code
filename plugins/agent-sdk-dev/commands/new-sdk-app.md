@@ -1,6 +1,7 @@
 ---
 description: Create and setup a new Claude Agent SDK application
 argument-hint: [project-name]
+allowed-tools: ["Read", "Write", "Bash", "WebFetch", "WebSearch", "TodoWrite", "AskUserQuestion", "Task"]
 ---
 
 You are tasked with helping the user create a new Claude Agent SDK application. Follow these steps carefully:
@@ -26,34 +27,59 @@ Before starting, review the official documentation to ensure you provide accurat
 
 ## Gather Requirements
 
-IMPORTANT: Ask these questions one at a time. Wait for the user's response before asking the next question. This makes it easier for the user to respond.
+Use the **AskUserQuestion tool** to gather requirements. Skip any questions the user has already answered via arguments.
 
-Ask the questions in this order (skip any that the user has already provided via arguments):
+**Question 1 - Language choice:**
+```
+Question: "Which programming language would you like to use?"
+Header: "Language"
+Options:
+  - TypeScript (Modern JavaScript with types, great tooling)
+  - Python (Simple syntax, extensive ecosystem)
+```
 
-1. **Language** (ask first): "Would you like to use TypeScript or Python?"
+**Question 2 - Project name** (skip if $ARGUMENTS provided):
+```
+Question: "What would you like to name your project?"
+Header: "Name"
+Options:
+  - my-agent (Simple default name)
+  - claude-assistant (Assistant-style agent)
+  - [User provides custom name via "Other"]
+```
 
-   - Wait for response before continuing
+**Question 3 - Agent type:**
+```
+Question: "What kind of agent are you building?"
+Header: "Agent type"
+Options:
+  - Coding agent (SRE, security review, code review)
+  - Business agent (Customer support, content creation)
+  - Data agent (Analysis, processing, reporting)
+  - Custom agent (I'll describe my use case)
+```
 
-2. **Project name** (ask second): "What would you like to name your project?"
+**Question 4 - Starting point:**
+```
+Question: "What starting point would you like?"
+Header: "Template"
+Options:
+  - Minimal (Hello World example to start from scratch)
+  - Basic (Agent with common features pre-configured)
+  - Full-featured (Complete example with tools, MCP, subagents)
+```
 
-   - If $ARGUMENTS is provided, use that as the project name and skip this question
-   - Wait for response before continuing
-
-3. **Agent type** (ask third, but skip if #2 was sufficiently detailed): "What kind of agent are you building? Some examples:
-
-   - Coding agent (SRE, security review, code review)
-   - Business agent (customer support, content creation)
-   - Custom agent (describe your use case)"
-   - Wait for response before continuing
-
-4. **Starting point** (ask fourth): "Would you like:
-
-   - A minimal 'Hello World' example to start
-   - A basic agent with common features
-   - A specific example based on your use case"
-   - Wait for response before continuing
-
-5. **Tooling choice** (ask fifth): Let the user know what tools you'll use, and confirm with them that these are the tools they want to use (for example, they may prefer pnpm or bun over npm). Respect the user's preferences when executing on the requirements.
+**Question 5 - Tooling choice:**
+```
+Question: "Which package manager do you prefer?"
+Header: "Package mgr"
+Options:
+  - npm (Recommended) (Default Node.js package manager)
+  - pnpm (Fast, disk-efficient)
+  - yarn (Alternative with workspaces support)
+  - bun (Fast all-in-one JavaScript runtime)
+```
+(For Python, ask about pip vs poetry vs uv instead)
 
 After all questions are answered, proceed to create the setup plan.
 
@@ -171,6 +197,6 @@ Once setup is complete and verified, provide the user with:
 - Ensure all code examples are functional and include proper error handling
 - Use modern syntax and patterns that are compatible with the latest SDK version
 - Make the experience interactive and educational
-- **ASK QUESTIONS ONE AT A TIME** - Do not ask multiple questions in a single response
+- **USE AskUserQuestion TOOL** - Always use the AskUserQuestion tool for gathering user input, not plain text questions
 
-Begin by asking the FIRST requirement question only. Wait for the user's answer before proceeding to the next question.
+Begin by using AskUserQuestion to ask the first requirement question. You can ask 1-4 related questions per AskUserQuestion call.

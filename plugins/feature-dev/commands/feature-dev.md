@@ -1,6 +1,7 @@
 ---
 description: Guided feature development with codebase understanding and architecture focus
 argument-hint: Optional feature description
+allowed-tools: ["Read", "Glob", "Grep", "Bash", "Write", "Edit", "TodoWrite", "AskUserQuestion", "Task"]
 ---
 
 # Feature Development
@@ -9,7 +10,7 @@ You are helping a developer implement a new feature. Follow a systematic approac
 
 ## Core Principles
 
-- **Ask clarifying questions**: Identify all ambiguities, edge cases, and underspecified behaviors. Ask specific, concrete questions rather than making assumptions. Wait for user answers before proceeding with implementation. Ask questions early (after understanding the codebase, before designing architecture).
+- **Use AskUserQuestion tool**: When you need to clarify ambiguities, edge cases, or underspecified behaviors, use the **AskUserQuestion tool** to present structured options. This provides a better user experience than plain text questions. Wait for user answers before proceeding with implementation.
 - **Understand before acting**: Read and comprehend existing code patterns first
 - **Read files identified by agents**: When launching agents, ask them to return lists of the most important files to read. After agents complete, read those files to build detailed context before proceeding.
 - **Simple and elegant**: Prioritize readable, maintainable, architecturally sound code
@@ -25,10 +26,16 @@ Initial request: $ARGUMENTS
 
 **Actions**:
 1. Create todo list with all phases
-2. If feature unclear, ask user for:
-   - What problem are they solving?
-   - What should the feature do?
-   - Any constraints or requirements?
+2. If feature unclear, use **AskUserQuestion** to clarify:
+   ```
+   Question: "What problem are you trying to solve with this feature?"
+   Header: "Problem"
+   Options:
+     - Bug fix (Something isn't working correctly)
+     - New capability (Add functionality that doesn't exist)
+     - Enhancement (Improve existing functionality)
+     - Refactor (Restructure without changing behavior)
+   ```
 3. Summarize understanding and confirm with user
 
 ---
@@ -63,10 +70,31 @@ Initial request: $ARGUMENTS
 **Actions**:
 1. Review the codebase findings and original feature request
 2. Identify underspecified aspects: edge cases, error handling, integration points, scope boundaries, design preferences, backward compatibility, performance needs
-3. **Present all questions to the user in a clear, organized list**
+3. **Use AskUserQuestion to gather answers** - group related questions together (1-4 per call):
+
+   **Example for scope clarification:**
+   ```
+   Question: "How should we handle edge cases?"
+   Header: "Edge cases"
+   Options:
+     - Strict validation (Reject invalid inputs with clear errors)
+     - Graceful fallback (Use sensible defaults when possible)
+     - User choice (Prompt user to decide at runtime)
+   ```
+
+   **Example for design preferences:**
+   ```
+   Question: "What's the priority for this implementation?"
+   Header: "Priority"
+   Options:
+     - Speed (Get it working quickly, refine later)
+     - Quality (Take time to do it right the first time)
+     - Balance (Reasonable quality within reasonable time)
+   ```
+
 4. **Wait for answers before proceeding to architecture design**
 
-If the user says "whatever you think is best", provide your recommendation and get explicit confirmation.
+If the user says "whatever you think is best", provide your recommendation and use AskUserQuestion to get explicit confirmation.
 
 ---
 
@@ -78,7 +106,15 @@ If the user says "whatever you think is best", provide your recommendation and g
 1. Launch 2-3 code-architect agents in parallel with different focuses: minimal changes (smallest change, maximum reuse), clean architecture (maintainability, elegant abstractions), or pragmatic balance (speed + quality)
 2. Review all approaches and form your opinion on which fits best for this specific task (consider: small fix vs large feature, urgency, complexity, team context)
 3. Present to user: brief summary of each approach, trade-offs comparison, **your recommendation with reasoning**, concrete implementation differences
-4. **Ask user which approach they prefer**
+4. **Use AskUserQuestion to let user choose:**
+   ```
+   Question: "Which architecture approach would you like to use?"
+   Header: "Approach"
+   Options:
+     - Minimal changes (Recommended) (Smallest change, maximum reuse of existing code)
+     - Clean architecture (Maintainability focus, elegant abstractions)
+     - Pragmatic balance (Speed and quality balanced)
+   ```
 
 ---
 
@@ -105,7 +141,15 @@ If the user says "whatever you think is best", provide your recommendation and g
 **Actions**:
 1. Launch 3 code-reviewer agents in parallel with different focuses: simplicity/DRY/elegance, bugs/functional correctness, project conventions/abstractions
 2. Consolidate findings and identify highest severity issues that you recommend fixing
-3. **Present findings to user and ask what they want to do** (fix now, fix later, or proceed as-is)
+3. **Use AskUserQuestion to present findings and get decision:**
+   ```
+   Question: "Code review found [N] issues. How would you like to proceed?"
+   Header: "Review"
+   Options:
+     - Fix now (Address all issues before continuing)
+     - Fix critical only (Address high-severity issues only)
+     - Proceed as-is (Accept current state)
+   ```
 4. Address issues based on user decision
 
 ---
