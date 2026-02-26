@@ -1,0 +1,8 @@
+{
+  "name": "dev",
+  "version": "0.1.0",
+  "description": "Unified development workflow: brainstorm ideas into designs, explore codebase, architect solutions, implement with TDD, and review quality — all in one auto-chained flow.",
+  "author": {
+    "name": "aohoyd"
+  }
+}

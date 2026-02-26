@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "claude-code-plugins",
+  "name": "claude-code-aohoyd",
   "version": "1.0.0",
   "description": "Bundled plugins for Claude Code including Agent SDK development tools, PR review toolkit, and commit workflows",
   "owner": {
@@ -56,6 +56,16 @@
       },
       "source": "./plugins/commit-commands",
       "category": "productivity"
+    },
+    {
+      "name": "dev",
+      "version": "0.1.0",
+      "description": "Unified development workflow: brainstorm ideas into designs, explore codebase, architect solutions, implement with TDD, and review quality — all in one auto-chained flow.",
+      "author": {
+        "name": "aohoyd"
+      },
+      "source": "./plugins/dev",
+      "category": "development"
     },
     {
       "name": "explanatory-output-style",
