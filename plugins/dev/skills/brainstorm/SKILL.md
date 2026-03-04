@@ -1,7 +1,7 @@
 ---
 name: brainstorming
 description: "This skill should be used when the user asks to 'brainstorm with me', 'help me design', 'let's think through', 'design a feature', 'help me figure out', 'help me plan', 'what's the best way to', 'help me architect', or wants to collaboratively develop an idea into a concrete design. Guides structured dialogue to transform vague ideas into fully-formed technical designs before implementation."
-allowed-tools: ["Read", "Glob", "Grep", "Bash", "Write", "TodoWrite", "AskUserQuestion", "Task"]
+allowed-tools: ["Read", "Glob", "Grep", "Bash", "Write", "TodoWrite", "Task"]
 ---
 
 <CRITICAL-RULE>

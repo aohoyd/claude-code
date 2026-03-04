@@ -1,7 +1,7 @@
 ---
 name: Code Review
 description: "This skill should be used when the user asks to 'review my code', 'check this code', 'review changes', 'code review', 'review what I wrote', 'check for bugs', or wants quality feedback on recent code changes. Launches parallel code-reviewer agents with different focuses and reports findings."
-allowed-tools: ["Read", "Glob", "Grep", "Bash", "TodoWrite", "AskUserQuestion", "Task"]
+allowed-tools: ["Read", "Glob", "Grep", "Bash", "TodoWrite", "Task"]
 ---
 
 # Code Review

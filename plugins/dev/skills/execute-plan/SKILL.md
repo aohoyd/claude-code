@@ -14,7 +14,7 @@ This skill:
 2. Executes each task sequentially using fresh task-executor subagents
 3. Runs a quick code review after each task and auto-fixes issues found
 4. Reports progress after each task
-5. Runs a comprehensive code review after all tasks complete
+5. **MANDATORY**: Invokes the `dev:code-review` skill for comprehensive review after ALL tasks complete
 6. Stops and asks for guidance on any failure
 
 ## Input Requirements
@@ -126,19 +126,26 @@ If auto-fix breaks tests, revert the fix and report it as a skipped issue for th
 
 Wait for user decision before continuing.
 
-### Step 6: Comprehensive Review After All Tasks
+### Step 6: MANDATORY Code Review After All Tasks
 
-After all tasks have been executed, run a comprehensive review:
+> **CRITICAL — DO NOT SKIP THIS STEP.** You MUST run a comprehensive code review after all tasks complete, BEFORE reporting the final summary. This is not optional.
 
-1. Launch 3 code-reviewer subagents (subagent_type: "dev:code-reviewer") in parallel:
-   - Focus on simplicity, DRY, and code readability
-   - Focus on bugs, logic errors, and correctness
-   - Focus on project conventions and codebase patterns
-2. Pass each agent the full list of files created/modified during execution
-3. Consolidate and deduplicate findings (only confidence >= 80)
-4. Auto-fix all clear issues using Edit/Write tools
-5. Run tests after fixes to verify nothing broke
-6. Report results:
+After all tasks have been executed successfully, invoke the **code-review skill** using the Skill tool:
+
+```
+Skill tool:
+  skill: "dev:code-review"
+  args: "comprehensive review of all files created/modified: [list all files]"
+```
+
+This will launch parallel code-reviewer agents covering simplicity/DRY, bugs/correctness, and conventions/patterns.
+
+After the code-review skill returns its findings:
+
+1. Auto-fix all clear issues (confidence >= 80) using Edit/Write tools
+2. Run tests after fixes to verify nothing broke
+3. If auto-fix breaks tests, revert the fix and report it as a skipped issue
+4. Report results:
 
 ```
 Comprehensive Review Complete
@@ -155,6 +162,8 @@ Skipped:
 ```
 
 If any issues were skipped, ask user how to handle them before reporting final summary.
+
+**REMINDER**: The final summary (Step 7) must NOT be reported until this code review step is complete.
 
 ## Progress Reporting
 

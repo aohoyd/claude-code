@@ -159,17 +159,20 @@ Create the directory if it doesn't exist.
 
 ## Handoff to Execution
 
-After writing the plan file, explicitly ask user:
+After writing the plan file, use the **AskUserQuestion tool** to ask if the user wants to proceed to execution:
 
-> "The implementation plan is complete and saved to `docs/plans/YYYY-MM-DD-<topic>-plan.md`.
->
-> The plan contains N tasks that will be executed sequentially, each with TDD steps.
->
-> **Would you like to hand off execution to the execute-plan skill with subagents?**
->
-> This will execute each task using a fresh subagent, following the TDD workflow in the plan."
+```
+AskUserQuestion:
+  question: "The implementation plan is saved to docs/plans/YYYY-MM-DD-<topic>-plan.md with N tasks. Would you like to hand off execution to the execute-plan skill with subagents?"
+  header: "Execute"
+  options:
+    - label: "Yes, execute now"
+      description: "Hand off to execute-plan skill which will run each task using a fresh subagent following the TDD workflow"
+    - label: "No, just the plan"
+      description: "Keep the plan file for manual execution or review later"
+```
 
-Wait for explicit user confirmation before triggering execute-plan.
+**IMPORTANT**: You MUST use the AskUserQuestion tool here, not plain text. Wait for the user's response before proceeding. If they choose "Yes, execute now", invoke the execute-plan skill via the Skill tool.
 
 ## Key Principles
 
